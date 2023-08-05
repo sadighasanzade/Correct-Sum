@@ -17,6 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -27,21 +29,22 @@ import com.sadig.correctsum.ui.viewmodel.MainViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
+
 @Composable
 fun SimpleSumGame(viewModel: MainViewModel) {
     val remainingTime = viewModel.timer.collectAsState()
     val gameState = viewModel.isGameRunning.collectAsState()
     //if time is up show results
-    if(remainingTime.value == 0) {
+    if (remainingTime.value == 0) {
         viewModel.setGameState(false)
     }
-    if(!gameState.value) {
+    if (!gameState.value) {
         //show result
         ResultScreen(mainViewModel = viewModel) {
             //reset
             viewModel.setGameState(true)
         }
-    }else {
+    } else {
         //show game screen
         gameScreen(viewModel = viewModel)
     }
@@ -122,7 +125,7 @@ private fun AnswerCard(text: Int, isSelected: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-fun gameScreen(viewModel : MainViewModel) {
+fun gameScreen(viewModel: MainViewModel) {
     val scope = rememberCoroutineScope()
     // Timer state
     val remainingTime = viewModel.timer.collectAsState()
@@ -165,7 +168,9 @@ fun gameScreen(viewModel : MainViewModel) {
             //count of correct answers
             countOfCorrectAnswers(
                 count = countOfCorrectAnswers.value,
-                modifier = Modifier.padding(4.dp)
+                modifier = Modifier
+                    .padding(4.dp)
+                    .semantics { testTag = "correctAnswer" }
             )
 
             Spacer(modifier = Modifier.height(200.dp))

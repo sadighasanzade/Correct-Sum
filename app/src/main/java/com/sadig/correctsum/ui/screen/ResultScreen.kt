@@ -20,6 +20,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sadig.correctsum.ui.theme.Teal200
@@ -63,6 +66,7 @@ fun ResultScreen(mainViewModel: MainViewModel, onReset: () -> Unit) {
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
+                        modifier = Modifier.semantics { testTag = "gameOver" },
                         textAlign = TextAlign.Center,
                         text = "Game over! You have ${count.value} correct answers",
                         style = MaterialTheme.typography.h6,
@@ -70,7 +74,7 @@ fun ResultScreen(mainViewModel: MainViewModel, onReset: () -> Unit) {
                     )
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    OutlinedButton(onClick = { onReset.invoke() }) {
+                    OutlinedButton(onClick = { onReset.invoke() }, modifier = Modifier.semantics { testTag = "playAgain" }) {
                         Text(
                             modifier = Modifier.padding(4.dp),
                             text = "Play again",
